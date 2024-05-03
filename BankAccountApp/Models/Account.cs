@@ -19,6 +19,10 @@ namespace BankAccountApp.Models
 			this.OwnerName = ownerName;
 			this._balance = initialBalance;
 
+            Console.WriteLine("Hesab yaradilir...");
+			Thread.Sleep (2000);
+            Console.WriteLine($"Hesab ugurla yaradildi");
+
         }
 
 		public double GetBalance() {
