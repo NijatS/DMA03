@@ -106,8 +106,6 @@ namespace BankAccountApp
 					case 0:
                         Console.WriteLine("Hesabdan chixish etmek istediyinize eminsiniz mi? (y/n)");
 
-						//char userInput = char.Console.ReadLine()
-
 						char.TryParse(Console.ReadLine(), out char userInput);
 
 						if(userInput == 'y')
