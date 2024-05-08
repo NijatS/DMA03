@@ -15,5 +15,10 @@ namespace BoltFood.Core.Models
 		public double Price { get; set; }
 		public ProductCategory Category { get; set; }
 		public Restaurant Restaurant { get; set; }
+
+		public override string ToString()
+		{
+			return $"ID: {Id}  Name: {Name}, Category: {Category}, Price: ${Price}";
+		}
 	}
 }
