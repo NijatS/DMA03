@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace BoltFood.Data.Repositories.Interfaces
 {
-	public interface IRestaurantRepository
+	public interface IRestaurantRepository:IGenericRepository<Restaurant>
 	{
-		public void Add(Restaurant restaurant);
-		public void Update(int id, Restaurant restaurant);
-		public void Delete(int id);
-		public List<Restaurant> GetAll();
-		public Restaurant GetById(int id);
+	
 	}
 }

@@ -14,9 +14,11 @@ namespace BoltFood.Service.Services.Implementations
 	public class ProductService : IProductService
 	{
 		private readonly IProductRepository _productRepository;
+		private readonly IRestaurantRepository _restaurantRepository;
         public ProductService()
         {
 			_productRepository = new ProductRepository();
+			_restaurantRepository = new RestaurantRepository();
         }
         public void Add()
 		{
@@ -33,14 +35,28 @@ namespace BoltFood.Service.Services.Implementations
             Console.WriteLine("Category number: ");
 			int.TryParse(Console.ReadLine(), out int categoryNumber);
 
-			_productRepository.Add(new Product()
+			Console.WriteLine("Enter a restaurant Id:");
+			int.TryParse(Console.ReadLine(), out int resId);
+
+			try
 			{
-				Name = name,
-				Description = description,
-				Price = price,
-				CreatedAt = DateTime.Now,
-				Category = (ProductCategory)categoryNumber,
-			});
+				Restaurant restaurant = _restaurantRepository.GetById(resId);
+
+
+				_productRepository.Add(new Product()
+				{
+					Name = name,
+					Description = description,
+					Price = price,
+					CreatedAt = DateTime.Now,
+					Restaurant = restaurant,
+					Category = (ProductCategory)categoryNumber,
+				});
+			}
+			catch (Exception ex)
+			{
+                Console.WriteLine(ex.Message);
+            }
 
         }
 
@@ -67,7 +83,7 @@ namespace BoltFood.Service.Services.Implementations
             }
         }
 
-		public void GetByID()
+		public void GetById()
 		{
             Console.WriteLine("Please enter the id:");
 			int.TryParse(Console.ReadLine(), out int id);
@@ -82,9 +98,69 @@ namespace BoltFood.Service.Services.Implementations
             }
         }
 
+		public void GetProductsByRestaurantId()
+		{
+			List<Product> foundproduct = new List<Product>();
+            Console.WriteLine("Enter restaurant ID:");
+			int.TryParse(Console.ReadLine(), out int id);
+			List<Product> products = _productRepository.GetAll();
+			foreach(Product product in products)
+			{
+				if(product.Restaurant.Id == id)
+				{
+					foundproduct.Add(product);
+				}
+			}
+			foreach(Product product in foundproduct)
+			{
+				Console.WriteLine(product);
+			}
+
+        }
+
 		public void Update()
 		{
-			throw new NotImplementedException();
+            Console.WriteLine("Please enter a product id to update:");
+			int.TryParse (Console.ReadLine(), out int id);
+
+			Console.WriteLine("Enter the product name:");
+			string name = Console.ReadLine();
+			Console.WriteLine("Description: ");
+			string description = Console.ReadLine();
+			Console.WriteLine("Price: ");
+			double.TryParse(Console.ReadLine(), out double price);
+			var enums = Enum.GetValues(typeof(ProductCategory));
+			foreach (var enum1 in enums)
+			{
+				Console.WriteLine((int)enum1 + "." + enum1);
+			}
+			Console.WriteLine("Category number: ");
+			int.TryParse(Console.ReadLine(), out int categoryNumber);
+
+			Console.WriteLine("Enter a restaurant Id:");
+			int.TryParse(Console.ReadLine(), out int resId);
+
+			try
+			{
+				Restaurant restaurant = _restaurantRepository.GetById(resId);
+
+				Product findedProduct = _productRepository.GetById(id);
+
+
+				findedProduct.Name = name;
+				findedProduct.Price = price;
+				findedProduct.Description = description;
+				findedProduct.UpdatedAt = DateTime.Now;
+				findedProduct.Restaurant = restaurant;
+				findedProduct.Category = (ProductCategory)categoryNumber;
+
+				_productRepository.Update(id,findedProduct);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+
 		}
 	}
 }

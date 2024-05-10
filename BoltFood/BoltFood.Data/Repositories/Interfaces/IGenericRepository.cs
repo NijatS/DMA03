@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace BoltFood.Data.Repositories.Interfaces
 {
-	public interface IProductRepository:IGenericRepository<Product> 
+	public interface IGenericRepository<T> where T : BaseEntity
 	{
-		
+		public void Add(T entity);
+		public void Update(int id,T entity);
+		public void Delete(int id);
+		public T GetById(int id);
+		public List<T> GetAll();
 	}
 }

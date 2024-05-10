@@ -87,17 +87,15 @@ namespace BoltFood.Service.Services.Implementations
 			Console.Write("Phone : ");
 			string phone = Console.ReadLine();
 
-			Restaurant restaurant = new Restaurant()
-			{
-				Name = name,
-				Address = address,
-				Phone = phone,
-				UpdatedAt = DateTime.Now,
-			};
+			Restaurant findedRestaurant = _repository.GetById(id);
+			findedRestaurant.Name = name;
+			findedRestaurant.Address = address;
+			findedRestaurant.Phone = phone;
+			findedRestaurant.UpdatedAt = DateTime.Now;	
 
 			try
 			{
-				_repository.Update(id, restaurant);
+				_repository.Update(id, findedRestaurant);
 			}
 			catch (Exception ex)
 			{

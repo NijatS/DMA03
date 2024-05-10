@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace BoltFood.Service.Services.Interfaces
 {
-	public interface IRestaurantService:IService
+	public interface IService
 	{
-
+		public void Add();
+		public void Update();
+		public void GetById();
+		public void GetAll();
+		public void Delete();
 	}
 }
