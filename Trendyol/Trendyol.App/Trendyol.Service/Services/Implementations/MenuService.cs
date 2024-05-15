@@ -15,7 +15,9 @@ namespace Trendyol.Service.Services.Implementations
 			while (isContinue)
 			{
 
-				Console.WriteLine("1.Customer Menu\n" +
+				Console.WriteLine(
+					"1.Customer Menu\n" + 
+					"2.Shop Menu\n" +
 					"0.Exit Program");
 
 				Console.Write("Enter operation number: ");

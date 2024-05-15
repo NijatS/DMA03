@@ -24,7 +24,7 @@ namespace Trendyol.Data.Repositories.Implementations
 		public ICollection<T> GetAll()
 		   => _entities;
 
-		public T GetById(int id)
+		public T? GetById(int id)
 			=> _entities.FirstOrDefault(x => x.Id == id);
 
 		public void Update(T entity)

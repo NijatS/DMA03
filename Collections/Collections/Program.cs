@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Specialized;
+using static System.Formats.Asn1.AsnWriter;
+using System.Xml;
 
 namespace Collections
 {
@@ -67,7 +70,7 @@ namespace Collections
 
 			List<Person> people = new List<Person>();
 
-			people.Add(new Person() { Id = 1 , Name = "Person 1",Age = 30 });
+			people.Add(new Person() { Id = 1, Name = "Person 1", Age = 30 });
 			people.Add(new Person() { Id = 2, Name = "Person 2", Age = 32 });
 			people.Add(new Person() { Id = 3, Name = "Person 3", Age = 30 });
 			people.Add(new Person() { Id = 4, Name = "Person 4", Age = 32 });
@@ -101,6 +104,11 @@ namespace Collections
 			persons.Add("a", "Person4");
 			persons.Add("k", "Person5");
 
+
+
+
+
+
 			//foreach (var person in persons)
 			//{
 			//             Console.WriteLine(person.Value);
@@ -122,10 +130,9 @@ namespace Collections
 			//}
 
 			#endregion
-
 			#region Stack Queue
 
-			Stack<int> ints = new Stack<int>();
+			//Stack<int> ints = new Stack<int>();
 
 			//ints.Push(1);
 			//ints.Push(2);
@@ -139,43 +146,43 @@ namespace Collections
 			//Console.WriteLine(ints.Peek());
 
 
-			Stack ints2 = new Stack();
+			//Stack ints2 = new Stack();
 
-			ints2.Push(5);
-			ints2.Push("abc");
+			//ints2.Push(5);
+			//ints2.Push("abc");
 
 			//while( ints2.Count > 0 )
-   //             Console.WriteLine(ints2.Pop());
+			//             Console.WriteLine(ints2.Pop());
 
 
 
-			Queue<int> queue = new Queue<int>();
+			//Queue<int> queue = new Queue<int>();
 
-			queue.Enqueue(5);
-			queue.Enqueue(6);
-			queue.Enqueue(11);
-			queue.Enqueue(-5);
-			queue.Enqueue(4);
+			//queue.Enqueue(5);
+			//queue.Enqueue(6);
+			//queue.Enqueue(11);
+			//queue.Enqueue(-5);
+			//queue.Enqueue(4);
 
 			//while(queue.Count > 0)
-   //             Console.WriteLine(queue.Dequeue());
+			//             Console.WriteLine(queue.Dequeue());
 
 
-			Queue queue2 = new Queue();
-			
-			queue2.Enqueue(5);
-			queue2.Enqueue("a");
+			//Queue queue2 = new Queue();
+
+			//queue2.Enqueue(5);
+			//queue2.Enqueue("a");
 
 
-			ListDictionary listDictionary = new ListDictionary();
+			//ListDictionary listDictionary = new ListDictionary();
 
-			listDictionary.Add(1, 5);
-			listDictionary.Add(-1, "a");
+			//listDictionary.Add(1, 5);
+			//listDictionary.Add(-1, "a");
 
-			LinkedList<int> listLinkedList = new LinkedList<int>();	
-			listLinkedList.AddFirst(5);
-			listLinkedList.AddFirst(6);
-			listLinkedList.AddLast(11);
+			//LinkedList<int> listLinkedList = new LinkedList<int>();
+			//listLinkedList.AddFirst(5);
+			//listLinkedList.AddFirst(6);
+			//listLinkedList.AddLast(11);
 
 
 			//foreach (var item in listLinkedList)
@@ -184,30 +191,65 @@ namespace Collections
 			//         }
 
 			#endregion
-
-
 			#region HasTable
 
-			Hashtable hashtable = new Hashtable();
+			//Hashtable hashtable = new Hashtable();
 
-			HashSet<int> hasSet = new HashSet<int>();
+			//HashSet<int> hasSet = new HashSet<int>();
 
-			hashtable.Add(1,5);
-			hashtable.Add(2,"a");
-			hashtable.Add(3,"b");
-			hashtable.Add(4,"c");
-
-
-			foreach (DictionaryEntry i in hashtable)
-              Console.WriteLine(i.Value);
+			//hashtable.Add(1,5);
+			//hashtable.Add(2,"a");
+			//hashtable.Add(3,"b");
+			//hashtable.Add(4,"c");
 
 
+			//foreach (DictionaryEntry i in hashtable)
+			//           Console.WriteLine(i.Value);
+			#endregion
+			#region Task
 
-            #endregion
+			//Create a console application that reads a sentence from the user, tokenizes it into words, and then counts the frequency of each unique word using a Dictionary< string, int>.Follow these steps:
+			//1.Ask the user to enter a sentence. 
+			// 2.Tokenize the sentence into words(ignoring punctuation and case sensitivity). 
+			// 3.Use a Dictionary<string, int> to store each unique word as a key and its frequency as the corresponding value.
+			// 4.Display the list of unique words along with their frequencies in alphabetical order. 
+			//  For example, if the user enters the sentence: “The quick brown fox jumps over the lazy dog”, your program should output something like this: Word Frequency: 
+			//------------------
+			// brown: 1
+			//dog: 1
+			//fox: 1
+			//jumps: 1
+			//lazy: 1
+			//over: 1
+			//quick: 1
+			//the: 2
+
+			Console.WriteLine("Cumle daxil edin:");
+			string sentence = Console.ReadLine();
+			List<string> words = sentence.Trim().Split(' ', '.', ',').ToList();
+			IDictionary<string, int> wordscount = new Dictionary<string, int>();
+			foreach (string word in words)
+			{
+				if (string.IsNullOrWhiteSpace(word))
+					continue;
+				if (wordscount.ContainsKey(word.ToLower()))
+				{
+					wordscount[word]++;
+				}
+				else
+				{
+					wordscount.Add(word.ToLower(), 1);
+				}
+			}
+
+			foreach (KeyValuePair<string, int> word in wordscount)
+			{
+				Console.WriteLine(word.Key + ":" + word.Value);
+			}
+			#endregion
 
 
 
-
-        }
+		}
 	}
 }
