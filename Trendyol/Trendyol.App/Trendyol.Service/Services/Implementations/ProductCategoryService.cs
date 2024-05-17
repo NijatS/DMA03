@@ -20,14 +20,11 @@ namespace Trendyol.Service.Services.Implementations
         }
         public void Add()
 		{
-
-
             Console.WriteLine("Enter Product Category name:");
 
 			string name=Console.ReadLine();
 
 			_repository.Add(new ProductCategory() { Name = name, CreatedDate = DateTime.Now });
-
         }
 
 		public void Delete()
@@ -46,7 +43,7 @@ namespace Trendyol.Service.Services.Implementations
 
 			if(category != null) 
 			{
-                Console.WriteLine("Category ID:"+ category.Id+ "Category Name:"+category.Name);
+                Console.WriteLine("Category ID:"+ category.Id+ " Category Name:"+category.Name);
             }
 
 		}
@@ -56,8 +53,7 @@ namespace Trendyol.Service.Services.Implementations
 			ICollection<ProductCategory> Category = _repository.GetAll();
 			foreach(ProductCategory category in Category)
 			{
-                
-				Console.WriteLine("Category ID:" + category.Id + "Category Name:" + category.Name);
+				Console.WriteLine("Category ID:" + category.Id + " Category Name:" + category.Name);
 			}
 		}
 

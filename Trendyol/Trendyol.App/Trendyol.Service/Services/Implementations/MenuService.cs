@@ -14,14 +14,18 @@ namespace Trendyol.Service.Services.Implementations
 			bool isContinue = true;
 			while (isContinue)
 			{
-
 				Console.WriteLine(
 					"1.Customer Menu\n" + 
 					"2.Shop Menu\n" +
+					"3.Product Menu\n"+
+					"4.Product Category Menu\n"+
 					"0.Exit Program");
+
 
 				Console.Write("Enter operation number: ");
 				int.TryParse(Console.ReadLine(), out int step);
+				Console.Clear();
+
 
 				switch (step)
 				{
@@ -34,8 +38,12 @@ namespace Trendyol.Service.Services.Implementations
 						SubMenu(shopService);
 						break;
 					case 3:
+						IProductService productService = new ProductService();
+						SubMenu(productService);
 						break;
 					case 4:
+						IProductCategoryService productCategoryService = new ProductCategoryService();
+						SubMenu(productCategoryService);
 						break;
 					case 0:
 						isContinue =false;
@@ -45,6 +53,7 @@ namespace Trendyol.Service.Services.Implementations
 						break;
 
 				}
+
 			}
 
 		}
