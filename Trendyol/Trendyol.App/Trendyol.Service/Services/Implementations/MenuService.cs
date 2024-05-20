@@ -19,6 +19,7 @@ namespace Trendyol.Service.Services.Implementations
 					"2.Shop Menu\n" +
 					"3.Product Menu\n"+
 					"4.Product Category Menu\n"+
+					"5.Order Menu\n" +
 					"0.Exit Program");
 
 
@@ -44,6 +45,10 @@ namespace Trendyol.Service.Services.Implementations
 					case 4:
 						IProductCategoryService productCategoryService = new ProductCategoryService();
 						SubMenu(productCategoryService);
+						break;
+					case 5:
+						IOrderService orderService = new OrderService();
+						SubMenu(orderService);
 						break;
 					case 0:
 						isContinue =false;

@@ -10,8 +10,8 @@ namespace Trendyol.Core.Models
 {
 	public class Order : BaseEntity
 	{
-		Customer Customer { get; set; }
-		OrderStatus Status { get; set; }
-
+		public Customer Customer { get; set; }
+		public OrderStatus Status { get; set; }
+		public List<OrderProduct> OrderProducts { get; set; }
 	}
 }
