@@ -17,7 +17,7 @@ namespace Trendyol.Core.Models
 		public ProductCategory Category { get; set; }
 		public override string ToString()
 		{
-			return "name:"+Name+" Description:"+ Description+"Stock:"+Stock+"Price:"+Price+"Shop:"+Shop.Name+"Category:"+Category.Name;
+			return "ID:" + Id + " Name:" +Name+" Description:"+ Description+" Stock:"+Stock+" Price:"+Price+" Shop:"+Shop.Name+" Category:"+Category.Name;
 		}
 	}
 }

@@ -53,7 +53,9 @@ namespace Trendyol.Service.Services.Implementations
 							Order = order,
 							CreatedDate = DateTime.Now
 						};
+						order.OrderProducts.Add(orderProduct);
 						_orderProductRepository.Add(orderProduct);
+
 						product.Stock -= count;
 						product.UpdatedDate = DateTime.Now;
 						_productRepository.Update(product);
@@ -71,8 +73,23 @@ namespace Trendyol.Service.Services.Implementations
 
 		public void ChangeStatus()
 		{
-			throw new NotImplementedException();
-		}
+			Console.WriteLine("Enter the id of the order you want to change: ");
+			int.TryParse(Console.ReadLine(), out int orderId);
+			Order order = _orderRepository.GetById(orderId);
+			if (order != null)
+			{
+				var orderEnums = Enum.GetValues(typeof(OrderStatus));
+				foreach (var orderEnum in orderEnums)
+				{
+					Console.WriteLine((int)orderEnum + " " + orderEnum);
+				}
+                Console.WriteLine("Enter status number: ");
+				int.TryParse(Console.ReadLine(), out int number);
+				order.Status = (OrderStatus)number;
+				order.UpdatedDate = DateTime.Now;
+				_orderRepository.Update(order);
+			}            
+        }
 
 		public void Delete()
 		{
@@ -98,24 +115,38 @@ namespace Trendyol.Service.Services.Implementations
 			int.TryParse(Console.ReadLine(), out int id);
 
 			Order order = _orderRepository.GetById(id);
-            Console.WriteLine("Customer name: " + order.Customer.Name);
-
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                Console.WriteLine(orderProduct.Product.Name + " : " + orderProduct.Count + "\n Total Price: " + orderProduct.Count * orderProduct.Product.Price);
-            }
-			double totalPrice = order.OrderProducts.Sum(x => x.Product.Price * x.Count);
-            Console.WriteLine("Orders' total price: " + totalPrice);
+			OrderDetail(order);
         }
 
 		public void GetAll()
 		{
-			throw new NotImplementedException();
-		}
+            Console.WriteLine("ENter customer id:");
+			int.TryParse(Console.ReadLine(), out int customerId);
+
+			var customerOrders = _orderRepository.GetAll().Where(x=>x.Customer.Id==customerId).ToList();
+
+            foreach (var customerOrder in customerOrders)
+            {
+				OrderDetail(customerOrder);
+            }
+        }
 
 		public void Update()
 		{
-			throw new NotImplementedException();
+            Console.WriteLine("Enter the id of order you want to update:");
+
+        }
+
+		private void OrderDetail(Order order)
+		{
+			Console.WriteLine("Customer name: " + order.Customer.Name);
+
+			foreach (var orderProduct in order.OrderProducts)
+			{
+				Console.WriteLine(orderProduct.Product.Name + " : " + orderProduct.Count + "Total Price: " + orderProduct.Count * orderProduct.Product.Price);
+			}
+			double totalPrice = order.OrderProducts.Sum(x => x.Product.Price * x.Count);
+			Console.WriteLine("Orders' total price: " + totalPrice);
 		}
 	}
 }

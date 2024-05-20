@@ -10,5 +10,15 @@ namespace Trendyol.Data.Repositories.Implementations
 {
 	public class ShopRepository : GenericRepository<Shop>, IShopRepository
 	{
-	}
+        public ShopRepository()
+        {
+            Shop shop = new Shop();
+            shop.Name = "Shop1";
+            shop.Description = "Desc";
+            shop.CreatedDate = DateTime.Now;
+            shop.Rating = 5;
+
+            _entities.Add(shop);
+        }
+    }
 }

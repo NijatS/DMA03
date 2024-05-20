@@ -66,17 +66,23 @@ namespace Trendyol.Service.Services.Implementations
 		{
 			bool isContinue = true;
 			string type = service.GetType().Name.Split("Service")[0];
+			bool result = service.GetType().ToString() == typeof(OrderService).ToString();
 
-            while (isContinue)
+			while (isContinue)
 			{
 				Console.WriteLine($"1.Add {type}\n" +
 					$"2.Update {type}\n" +
 					$"3.Delete {type}\n" +
 					$"4.Get {type} by Id\n" +
-					$"5.Get All {type}s\n" +
-					$"0.Exit {type} Menu");
+					$"5.Get All {type}s");
 
-				Console.Write("Enter operation number: ");
+				if (result)
+				{
+                    Console.Write($"6.Change Status {type}s\n");
+                }
+                Console.WriteLine($"0.Exit {type} Menu");
+
+                Console.Write("Enter operation number: ");
 				int.TryParse(Console.ReadLine(), out int step);
 
 				switch (step)

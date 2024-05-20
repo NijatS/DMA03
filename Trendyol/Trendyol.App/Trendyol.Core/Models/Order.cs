@@ -12,6 +12,6 @@ namespace Trendyol.Core.Models
 	{
 		public Customer Customer { get; set; }
 		public OrderStatus Status { get; set; }
-		public List<OrderProduct> OrderProducts { get; set; }
+		public List<OrderProduct> OrderProducts = new List<OrderProduct>();
 	}
 }

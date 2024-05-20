@@ -10,6 +10,5 @@ namespace Trendyol.Data.Repositories.Implementations
 {
 	public class ProductRepository:GenericRepository<Product>,IProductRepository
 	{
-
-	}
+    }
 }

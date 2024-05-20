@@ -11,7 +11,13 @@ namespace Trendyol.Data.Repositories.Implementations
 {
 	public class ProductCategoryRepository:GenericRepository<ProductCategory>,IProductCategoryRepository
 	{
+        public ProductCategoryRepository()
+        {
+            ProductCategory productCategory = new ProductCategory();
+            productCategory.Name = "Shirt";
+            productCategory.CreatedDate = DateTime.Now;
 
-
-	}
+            _entities.Add(productCategory);
+        }
+    }
 }

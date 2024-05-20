@@ -10,7 +10,7 @@ namespace Trendyol.Data.Repositories.Implementations
 {
 	public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 	{
-		private static ICollection<T> _entities = new List<T>();
+		public static ICollection<T> _entities = new List<T>();
 		public void Add(T entity)
 			=> _entities.Add(entity);
 
