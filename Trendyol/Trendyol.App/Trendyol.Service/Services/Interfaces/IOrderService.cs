@@ -8,7 +8,7 @@ namespace Trendyol.Service.Services.Interfaces
 {
 	public interface IOrderService : IService
 	{
-		public void ChangeStatus();
+		public Task ChangeStatusAsync();
 
 	}
 }

@@ -8,6 +8,6 @@ namespace Trendyol.Service.Services.Interfaces
 {
 	public interface IMenuService
 	{
-		public void ShowMenu();
+		public Task ShowMenuAsync();
 	}
 }

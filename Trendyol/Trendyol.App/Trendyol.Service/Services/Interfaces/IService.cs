@@ -8,10 +8,10 @@ namespace Trendyol.Service.Services.Interfaces
 {
 	public interface IService
 	{
-		public void Add();
-		public void Update();
-		public void Delete();
-		public void Get();
-		public void GetAll();
+		public Task AddAsync();
+		public Task UpdateAsync();
+		public Task DeleteAsync();
+		public Task GetAsync();
+		public Task GetAllAsync();
 	}
 }

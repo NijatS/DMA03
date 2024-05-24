@@ -18,28 +18,28 @@ namespace Trendyol.Service.Services.Implementations
         {
 			_repository = new ProductCategoryRepository();
         }
-        public void Add()
+        public async Task AddAsync()
 		{
             Console.WriteLine("Enter Product Category name:");
 
 			string name=Console.ReadLine();
 
-			_repository.Add(new ProductCategory() { Name = name, CreatedDate = DateTime.Now });
+			await _repository.AddAsync(new ProductCategory() { Name = name, CreatedDate = DateTime.Now });
         }
 
-		public void Delete()
+		public async Task DeleteAsync()
 		{
             Console.WriteLine("Select ID:");
 			int.TryParse(Console.ReadLine(),out int id);
-			_repository.Delete(id);
+			await _repository.DeleteAsync(id);
 		}
 
-		public void Get()
+		public async Task GetAsync()
 		{
             Console.WriteLine("Select ID:");
 			int.TryParse(Console.ReadLine(), out int id);
 
-		   ProductCategory category=_repository.GetById(id);
+		   ProductCategory category=await _repository.GetByIdAsync(id);
 
 			if(category != null) 
 			{
@@ -48,20 +48,20 @@ namespace Trendyol.Service.Services.Implementations
 
 		}
 
-		public void GetAll()
+		public async Task GetAllAsync()
 		{
-			ICollection<ProductCategory> Category = _repository.GetAll();
+			ICollection<ProductCategory> Category = await _repository.GetAllAsync();
 			foreach(ProductCategory category in Category)
 			{
 				Console.WriteLine("Category ID:" + category.Id + " Category Name:" + category.Name);
 			}
 		}
 
-		public void Update()
+		public async Task UpdateAsync()
 		{
             Console.WriteLine("Select Id:");
 			int.TryParse(Console.ReadLine(), out int id);
-			ProductCategory uptadetproductcategory=_repository.GetById(id);
+			ProductCategory uptadetproductcategory=await _repository.GetByIdAsync(id);
 			if(uptadetproductcategory != null)
 			{
 				Console.WriteLine("Enter Product Category name:");
@@ -71,7 +71,7 @@ namespace Trendyol.Service.Services.Implementations
 				uptadetproductcategory.Name = name;
 
 				uptadetproductcategory.UpdatedDate = DateTime.Now;
-				_repository.Update(uptadetproductcategory);
+				await _repository.UpdateAsync(uptadetproductcategory);
 
 			}
 

@@ -5,11 +5,11 @@ namespace Trendyol.App
 {
 	internal class Program
 	{
-		static void Main(string[] args)
+		static async Task Main(string[] args)
 		{
 			IMenuService menu = new MenuService();
 
-			menu.ShowMenu();
+			await menu.ShowMenuAsync();
 		}
 	}
 }

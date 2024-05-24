@@ -9,10 +9,10 @@ namespace Trendyol.Data.Repositories.Interfaces
 {
 	public interface IGenericRepository<T> where T : BaseEntity
 	{
-		public void Add(T entity);
-		public void Update(T entity);
-		public void Delete(int id);
-		public T GetById(int id);
-		public ICollection<T> GetAll();
+		public Task AddAsync(T entity);
+		public Task UpdateAsync(T entity);
+		public Task DeleteAsync(int id);
+		public Task<T> GetByIdAsync(int id);
+		public Task<ICollection<T>> GetAllAsync();
 	}
 }

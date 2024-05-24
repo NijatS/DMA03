@@ -19,14 +19,14 @@ namespace Trendyol.Service.Services.Implementations
 			_repository = new ShopRepository();
 		}
 
-		public void Add()
+		public async Task AddAsync()
 		{
 
 			Console.Write("Enter shop's name: ");
-			string name = Console.ReadLine();
+			string? name = Console.ReadLine();
 
 			Console.Write("Description: ");
-			string description = Console.ReadLine();
+			string? description = Console.ReadLine();
 
 			Console.Write("Rating: ");
 
@@ -34,26 +34,26 @@ namespace Trendyol.Service.Services.Implementations
 
 			Shop shop = new Shop() { Name = name, Description = description, Rating = rating, CreatedDate = DateTime.Now };
 
-			_repository.Add(shop);
+			await _repository.AddAsync(shop);
 
 		}
 
-		public void Delete()
+		public async Task DeleteAsync()
 		{
 			Console.WriteLine("Enter the id of shop you'd like to delete.");
 
 			int.TryParse(Console.ReadLine(), out int id);
 
-			_repository.Delete(id);
+			await _repository.DeleteAsync(id);
 		}
 
-		public void Get()
+		public async Task GetAsync()
 		{
 			Console.WriteLine("Enter the id of shop you'd like to get.");
 
 			int.TryParse(Console.ReadLine(), out int id);
 
-			Shop foundShop = _repository.GetById(id);
+			Shop foundShop = await _repository.GetByIdAsync(id);
 
 			if (foundShop != null)
 			{
@@ -62,22 +62,22 @@ namespace Trendyol.Service.Services.Implementations
 			else Console.WriteLine($"Id: {id} - Shop not found");
 		}
 
-		public void GetAll()
+		public async Task GetAllAsync()
 		{
-			foreach (Shop shop in _repository.GetAll())
+			foreach (Shop shop in await _repository.GetAllAsync())
 			{
 				Console.WriteLine(shop);
 			}
 		}
 
-		public void Update()
+		public async Task UpdateAsync()
 		{
 			Console.WriteLine("Enter the id of shop you'd like to update.");
 
 			int.TryParse(Console.ReadLine(), out int id);
 
-			Shop foundShop = _repository.GetById(id);
-
+			Shop foundShop = await _repository.GetByIdAsync(id);
+			 
 			Console.Write("Enter shop's name: ");
 			string name = Console.ReadLine();
 
@@ -93,7 +93,7 @@ namespace Trendyol.Service.Services.Implementations
 			foundShop.Rating = rating;
 			foundShop.UpdatedDate = DateTime.Now;
 
-			_repository.Update(foundShop);
+			await _repository.UpdateAsync(foundShop);
 		}
 	}
 }

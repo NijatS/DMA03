@@ -24,58 +24,28 @@ namespace Trendyol.Service.Services.Implementations
 			_orderProductRepository = new OrderProductRepository();
 			_productRepository = new ProductRepository();
         }
-        public void Add()
+        public async Task AddAsync()
 		{
             Console.WriteLine("Add customer Id:");
 			int.TryParse(Console.ReadLine(), out int id);
-			Customer customer = _customerRepository.GetById(id);
-
+			Customer customer = await _customerRepository.GetByIdAsync(id);
 
 			Order order = new Order();
+
 			order.Customer = customer;
 			order.Status = (OrderStatus)5;
 			order.CreatedDate = DateTime.Now;
-			bool isContinue = true;
-			while (isContinue)
-			{
-                Console.WriteLine("Add product Id you want to add to the order:");
-				int.TryParse(Console.ReadLine(), out int productId);
-				Product product = _productRepository.GetById(productId);
-				if(product != null) {
-					Console.WriteLine("Enter the count:");
-					int.TryParse(Console.ReadLine(), out int count);
-					if (count<=product.Stock)
-					{
-						OrderProduct orderProduct = new OrderProduct()
-						{
-							Product = product,
-							Count = count,
-							Order = order,
-							CreatedDate = DateTime.Now
-						};
-						order.OrderProducts.Add(orderProduct);
-						_orderProductRepository.Add(orderProduct);
 
-						product.Stock -= count;
-						product.UpdatedDate = DateTime.Now;
-						_productRepository.Update(product);
-					}
-				}
-                Console.WriteLine("Do you want to continue? y / n");
-				char.TryParse(Console.ReadLine(), out char answer);
-                if (answer != 'y')
-				{
-					isContinue = false;
-				}
-            } 
-			_orderRepository.Add(order);
+			await AddOrderProducts(order);
+
+			await _orderRepository.AddAsync(order);
         }
 
-		public void ChangeStatus()
+		public async Task ChangeStatusAsync()
 		{
 			Console.WriteLine("Enter the id of the order you want to change: ");
 			int.TryParse(Console.ReadLine(), out int orderId);
-			Order order = _orderRepository.GetById(orderId);
+			Order order =await _orderRepository.GetByIdAsync(orderId);
 			if (order != null)
 			{
 				var orderEnums = Enum.GetValues(typeof(OrderStatus));
@@ -87,57 +57,76 @@ namespace Trendyol.Service.Services.Implementations
 				int.TryParse(Console.ReadLine(), out int number);
 				order.Status = (OrderStatus)number;
 				order.UpdatedDate = DateTime.Now;
-				_orderRepository.Update(order);
+				await _orderRepository.UpdateAsync(order);
 			}            
         }
 
-		public void Delete()
+		public async Task DeleteAsync()
 		{
             Console.WriteLine("Enter id of the order you want to delete:");
 			int.TryParse(Console.ReadLine(), out int id);
 			
-			Order order = _orderRepository.GetById(id);
+			Order order = await _orderRepository.GetByIdAsync(id);
 
             foreach (var orderProduct in order.OrderProducts)
             {
 				Product product = orderProduct.Product;
 				product.Stock += orderProduct.Count;
 				product.UpdatedDate = DateTime.Now;
-				_productRepository.Update(product);
-				_orderProductRepository.Delete(orderProduct.Id);
+				await _productRepository.UpdateAsync(product);
+				await _orderProductRepository.DeleteAsync(orderProduct.Id);
             }
-            _orderRepository.Delete(id);
+          await  _orderRepository.DeleteAsync(id);
 		}
 
-		public void Get()
+		public async Task GetAsync()
 		{
 			Console.WriteLine("Enter id of the order you want to get:");
 			int.TryParse(Console.ReadLine(), out int id);
 
-			Order order = _orderRepository.GetById(id);
-			OrderDetail(order);
+			Order order = await _orderRepository.GetByIdAsync(id);
+			await OrderDetailAsync(order);
         }
 
-		public void GetAll()
+		public async Task GetAllAsync()
 		{
-            Console.WriteLine("ENter customer id:");
+            Console.WriteLine("Enter customer id:");
 			int.TryParse(Console.ReadLine(), out int customerId);
 
-			var customerOrders = _orderRepository.GetAll().Where(x=>x.Customer.Id==customerId).ToList();
+			var customerOrders = (await _orderRepository.GetAllAsync()).Where(x=>x.Customer.Id==customerId).ToList();
 
             foreach (var customerOrder in customerOrders)
             {
-				OrderDetail(customerOrder);
+				await OrderDetailAsync(customerOrder);
             }
         }
 
-		public void Update()
+		public async Task UpdateAsync()
 		{
-            Console.WriteLine("Enter the id of order you want to update:");
+            Console.Write("Enter the id of order you want to update:");
+			int.TryParse(Console.ReadLine(),out int id);	
+
+			Order order = await _orderRepository.GetByIdAsync(id);
+			if(order != null)
+			{
+				List<OrderProduct> oldOrderProducts = order.OrderProducts;
+				foreach (var orderProduct in oldOrderProducts)
+				{
+					await _orderProductRepository.DeleteAsync(orderProduct.Id);
+					Product product = orderProduct.Product;
+
+					product.Stock += orderProduct.Count;
+					await _productRepository.UpdateAsync(product);
+				}
+				order.OrderProducts = new List<OrderProduct>();
+				await AddOrderProducts(order);
+
+				await _orderRepository.UpdateAsync(order);
+			}
 
         }
 
-		private void OrderDetail(Order order)
+		private async Task OrderDetailAsync(Order order)
 		{
 			Console.WriteLine("Customer name: " + order.Customer.Name);
 
@@ -147,6 +136,45 @@ namespace Trendyol.Service.Services.Implementations
 			}
 			double totalPrice = order.OrderProducts.Sum(x => x.Product.Price * x.Count);
 			Console.WriteLine("Orders' total price: " + totalPrice);
+		}
+
+
+		private async Task AddOrderProducts(Order order)
+		{
+			bool isContinue = true;
+			while (isContinue)
+			{
+				Console.WriteLine("Add product Id you want to add to the order:");
+				int.TryParse(Console.ReadLine(), out int productId);
+				Product product = await _productRepository.GetByIdAsync(productId);
+				if (product != null)
+				{
+					Console.WriteLine("Enter the count:");
+					int.TryParse(Console.ReadLine(), out int count);
+					if (count <= product.Stock)
+					{
+						OrderProduct orderProduct = new OrderProduct()
+						{
+							Product = product,
+							Count = count,
+							Order = order,
+							CreatedDate = DateTime.Now
+						};
+						order.OrderProducts.Add(orderProduct);
+						await _orderProductRepository.AddAsync(orderProduct);
+
+						product.Stock -= count;
+						product.UpdatedDate = DateTime.Now;
+						await _productRepository.UpdateAsync(product);
+					}
+				}
+				Console.WriteLine("Do you want to continue? y / n");
+				char.TryParse(Console.ReadLine(), out char answer);
+				if (answer != 'y')
+				{
+					isContinue = false;
+				}
+			}
 		}
 	}
 }

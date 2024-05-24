@@ -11,25 +11,25 @@ namespace Trendyol.Data.Repositories.Implementations
 	public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 	{
 		public static ICollection<T> _entities = new List<T>();
-		public void Add(T entity)
+		public async Task AddAsync(T entity)
 			=> _entities.Add(entity);
 
-		public void Delete(int id)
+		public async Task DeleteAsync(int id)
 		{
-			T entity = GetById(id);
+			T? entity = await GetByIdAsync(id);
 			if(entity != null)
 				_entities.Remove(entity);
 		}
 
-		public ICollection<T> GetAll()
-		   => _entities;
+		public async Task<ICollection<T>> GetAllAsync()
+		   =>  _entities;
 
-		public T? GetById(int id)
+		public async Task<T?> GetByIdAsync(int id)
 			=> _entities.FirstOrDefault(x => x.Id == id);
 
-		public void Update(T entity)
+		public async Task UpdateAsync(T entity)
 		{
-			T updatedEntity = GetById(entity.Id);
+			T? updatedEntity = await GetByIdAsync(entity.Id);
 			if (updatedEntity != null)
 				updatedEntity = entity;
 		}

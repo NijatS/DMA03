@@ -24,13 +24,13 @@ namespace Trendyol.Service.Services.Implementations
 			_shopRepository = new ShopRepository();
 			_shopService = new ShopService();
 		}
-		public void Add()
+		public async Task AddAsync()
 		{
 
-			if (_shopRepository.GetAll().Count == 0)
+			if ((await _shopRepository.GetAllAsync()).Count == 0)
 			{
 				Console.WriteLine("Ilk once Shop daxil edin");
-				_shopService.Add();
+				await _shopService.AddAsync();
 			}
 
 			Console.Write("Enter Product Name:");
@@ -46,12 +46,20 @@ namespace Trendyol.Service.Services.Implementations
 			double.TryParse(Console.ReadLine(), out double price);
 			Console.Write("CategoryID:");
 			int.TryParse(Console.ReadLine(), out int categoryid);
-			ProductCategory category = _productCategoryRepository.GetById(categoryid);
-			if (category == null) { Console.WriteLine("bu ID e uygun category yoxdu"); return; }
+			ProductCategory category = await _productCategoryRepository.GetByIdAsync(categoryid);
+			if (category == null)
+			{
+				Console.WriteLine("bu ID e uygun category yoxdu");
+				return;
+			}
 			Console.Write("ShopID:");
 			int.TryParse(Console.ReadLine(), out int shopId);
-			Shop shop = _shopRepository.GetById(shopId);
-			if (shop == null) { Console.WriteLine("bu ID e uygun shop yocdur"); return; }
+			Shop shop = await _shopRepository.GetByIdAsync(shopId);
+			if (shop == null)
+			{
+				Console.WriteLine("bu ID e uygun shop yocdur");
+				return;
+			}
 
 			Product product = new()
 			{
@@ -64,42 +72,46 @@ namespace Trendyol.Service.Services.Implementations
 				CreatedDate = DateTime.Now
 			};
 
-			_productRepository.Add(product);
+			await _productRepository.AddAsync(product);
 
 		}
 
-		public void Delete()
+		public async Task DeleteAsync()
 		{
 			Console.WriteLine("id");
 			int.TryParse(Console.ReadLine(), out int productID);
-			_productRepository.Delete(productID);
+			await _productRepository.DeleteAsync(productID);
 
 		}
 
-		public void Get()
+		public async Task GetAsync()
 		{
 			Console.WriteLine("id");
 			int.TryParse(Console.ReadLine(), out int productID);
-			Product product = _productRepository.GetById(productID);
+			Product product = await _productRepository.GetByIdAsync(productID);
 			if (product == null) { Console.WriteLine("product tapilmadi"); return; }
 			Console.WriteLine(product);
 		}
 
-		public void GetAll()
+		public async Task GetAllAsync()
 		{
-			List<Product> products = _productRepository.GetAll().ToList();
+			List<Product> products = (await _productRepository.GetAllAsync()).ToList();
 			foreach (var product in products)
 			{
 				Console.WriteLine(product);
 			}
 		}
 
-		public void Update()
+		public async Task UpdateAsync()
 		{
 			Console.WriteLine("id");
 			int.TryParse(Console.ReadLine(), out int productID);
-			Product product = _productRepository.GetById(productID);
-			if (product == null) { Console.WriteLine("product tapilmadi"); return; }
+			Product product = await _productRepository.GetByIdAsync(productID);
+			if (product == null)
+			{
+				Console.WriteLine("product tapilmadi");
+				return;
+			}
 			Console.Write("Enter Product Name:");
 			string name = Console.ReadLine();
 
@@ -113,12 +125,20 @@ namespace Trendyol.Service.Services.Implementations
 			double.TryParse(Console.ReadLine(), out double price);
 			Console.Write("CategoryID:");
 			int.TryParse(Console.ReadLine(), out int categoryid);
-			ProductCategory category = _productCategoryRepository.GetById(categoryid);
-			if (category == null) { Console.WriteLine("bu ID e uygun category yoxdu"); return; }
+			ProductCategory category = await _productCategoryRepository.GetByIdAsync(categoryid);
+			if (category == null)
+			{
+				Console.WriteLine("bu ID e uygun category yoxdu");
+				return;
+			}
 			Console.Write("ShopID:");
 			int.TryParse(Console.ReadLine(), out int shopId);
-			Shop shop = _shopRepository.GetById(shopId);
-			if (shop == null) { Console.WriteLine("bu ID e uygun shop yocdur"); return; }
+			Shop shop = await _shopRepository.GetByIdAsync(shopId);
+			if (shop == null)
+			{
+				Console.WriteLine("bu ID e uygun shop yocdur");
+				return;
+			}
 
 
 			product.Name = name;
@@ -129,7 +149,7 @@ namespace Trendyol.Service.Services.Implementations
 			product.UpdatedDate = DateTime.Now;
 			product.Shop = shop;
 
-			_productRepository.Update(product);
+			await _productRepository.UpdateAsync(product);
 
 		}
 	}

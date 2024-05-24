@@ -9,7 +9,7 @@ namespace Trendyol.Service.Services.Implementations
 {
 	public class MenuService : IMenuService
 	{
-		public void ShowMenu()
+		public async Task ShowMenuAsync()
 		{
 			bool isContinue = true;
 			while (isContinue)
@@ -32,23 +32,23 @@ namespace Trendyol.Service.Services.Implementations
 				{
 					case 1:
 						ICustomerService customerService = new CustomerService();
-						SubMenu(customerService);
+						await SubMenuAsync(customerService);
 						break;
 					case 2:
 						IShopService shopService = new ShopService();
-						SubMenu(shopService);
+						await SubMenuAsync(shopService);
 						break;
 					case 3:
 						IProductService productService = new ProductService();
-						SubMenu(productService);
+						await SubMenuAsync(productService);
 						break;
 					case 4:
 						IProductCategoryService productCategoryService = new ProductCategoryService();
-						SubMenu(productCategoryService);
+						await SubMenuAsync(productCategoryService);
 						break;
 					case 5:
 						IOrderService orderService = new OrderService();
-						SubMenu(orderService);
+						await SubMenuAsync(orderService);
 						break;
 					case 0:
 						isContinue =false;
@@ -62,7 +62,7 @@ namespace Trendyol.Service.Services.Implementations
 			}
 
 		}
-		private void SubMenu(IService service)
+		private async Task SubMenuAsync(IService service)
 		{
 			bool isContinue = true;
 			string type = service.GetType().Name.Split("Service")[0];
@@ -84,23 +84,24 @@ namespace Trendyol.Service.Services.Implementations
 
                 Console.Write("Enter operation number: ");
 				int.TryParse(Console.ReadLine(), out int step);
+				Console.Clear();
 
 				switch (step)
 				{
 					case 1:
-						service.Add();
+						await service.AddAsync();
 						break;
 					case 2:
-						service.Update();
+						await service.UpdateAsync();
 						break;
 					case 3:
-						service.Delete();
+						await service.DeleteAsync();
 						break;
 					case 4:
-						service.Get();
+						await service.GetAsync();
 						break;
 					case 5:
-						service.GetAll();
+						await service.GetAllAsync();
 						break;
 					case 0:
 						isContinue = false;

@@ -17,7 +17,7 @@ namespace Trendyol.Service.Services.Implementations
 		{
 			_customerRepository = new CustomerRepository();
 		}
-		public void Add()
+		public async Task AddAsync()
 		{
 			Console.Write("Enter Name:");
 			string name = Console.ReadLine();
@@ -32,7 +32,7 @@ namespace Trendyol.Service.Services.Implementations
 			string phone = Console.ReadLine();
 
 
-			_customerRepository.Add(new()
+			await _customerRepository.AddAsync(new()
 			{
 				Name = name,
 				Surname = surname,
@@ -42,37 +42,37 @@ namespace Trendyol.Service.Services.Implementations
 			});
 		}
 
-		public void Delete()
+		public async Task DeleteAsync()
 		{
 			Console.Write("Enter Customer Id: ");
 			int.TryParse(Console.ReadLine(), out int id);
 			if (id != 0)
-				_customerRepository.Delete(id);
+				await _customerRepository.DeleteAsync(id);
 		}
 
-		public void Get()
+		public async Task GetAsync()
 		{
 			Console.Write("Enter Customer Id: ");
 			int.TryParse(Console.ReadLine(), out int id);
-			Customer customer = _customerRepository.GetById(id);
+			Customer customer = await _customerRepository.GetByIdAsync(id);
 
 			if (customer != null)
 				Console.WriteLine(customer);
 		}
 
-		public void GetAll()
+		public async Task GetAllAsync()
 		{
-			ICollection<Customer> customers = _customerRepository.GetAll();
+			ICollection<Customer> customers = await _customerRepository.GetAllAsync();
 			foreach (Customer customer in customers)
 				Console.WriteLine(customer);
 		}
 
-		public void Update()
+		public async Task UpdateAsync()
 		{
 			Console.Write("Enter Customer Id: ");
 			int.TryParse(Console.ReadLine(), out int id);
 
-			Customer updatedCustomer = _customerRepository.GetById(id);
+			Customer updatedCustomer = await _customerRepository.GetByIdAsync(id);
 			if (updatedCustomer != null)
 			{
 				Console.Write("Enter Name:");
@@ -92,7 +92,7 @@ namespace Trendyol.Service.Services.Implementations
 				updatedCustomer.Address = address;
 				updatedCustomer.Phone = phone;
 				updatedCustomer.UpdatedDate = DateTime.Now;
-				_customerRepository.Update(updatedCustomer);
+				await _customerRepository.UpdateAsync(updatedCustomer);
 			}
 
 		}

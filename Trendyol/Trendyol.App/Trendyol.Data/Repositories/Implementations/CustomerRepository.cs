@@ -10,16 +10,6 @@ namespace Trendyol.Data.Repositories.Implementations
 {
 	public class CustomerRepository: GenericRepository<Customer>,ICustomerRepository
 	{
-        public CustomerRepository()
-        {
-            Customer customer = new Customer();
-            customer.Name = "Aci";
-            customer.Surname = "Acili";
-            customer.Address = "Hazi";
-            customer.CreatedDate = DateTime.Now;
-
-            _entities.Add(customer);
-            
-        }
+       
     }
 }
