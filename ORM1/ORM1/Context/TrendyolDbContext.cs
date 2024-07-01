@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ORM1.Entities;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,7 @@ namespace ORM1.Context
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
+
+       
     }
 }
