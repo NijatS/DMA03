@@ -7,8 +7,9 @@ using Trendyol.App.Entities.BaseEntities;
 
 namespace Trendyol.App.Entities
 {
-    public class ProductCategory : BaseEntity
+    public class Category : BaseEntity
     {
         public string Name { get; set; }
+        public virtual ICollection<SubCategory> SubCategories { get; set; } 
     }
 }

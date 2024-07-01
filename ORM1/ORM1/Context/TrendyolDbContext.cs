@@ -19,6 +19,9 @@ namespace ORM1.Context
         }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Shop> Shops { get; set; }
-        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<Basket> Baskets { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
     }
 }

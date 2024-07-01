@@ -53,10 +53,6 @@ namespace ORM1
 
 
 
-
-
-
-
             List<Shop> shops =  context.Shops.Where(s=>!s.isDeleted ).ToList();
 
 

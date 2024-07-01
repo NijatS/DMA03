@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ORM1.Context;
 
@@ -11,9 +12,11 @@ using ORM1.Context;
 namespace Trendyol.App.Migrations
 {
     [DbContext(typeof(TrendyolDbContext))]
-    partial class TrendyolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240701132331_addedProduct")]
+    partial class addedProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,68 +61,6 @@ namespace Trendyol.App.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Trendyol.App.Entities.Basket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Baskets");
-                });
-
-            modelBuilder.Entity("Trendyol.App.Entities.BasketItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BasketId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BasketId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("Trendyol.App.Entities.Category", b =>
@@ -258,36 +199,6 @@ namespace Trendyol.App.Migrations
                     b.ToTable("SubCategories");
                 });
 
-            modelBuilder.Entity("Trendyol.App.Entities.Basket", b =>
-                {
-                    b.HasOne("ORM1.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("Trendyol.App.Entities.BasketItem", b =>
-                {
-                    b.HasOne("Trendyol.App.Entities.Basket", "Basket")
-                        .WithMany("BasketItem")
-                        .HasForeignKey("BasketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Trendyol.App.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Basket");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Trendyol.App.Entities.Product", b =>
                 {
                     b.HasOne("Trendyol.App.Entities.Shop", "Shop")
@@ -316,11 +227,6 @@ namespace Trendyol.App.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Trendyol.App.Entities.Basket", b =>
-                {
-                    b.Navigation("BasketItem");
                 });
 
             modelBuilder.Entity("Trendyol.App.Entities.Category", b =>
