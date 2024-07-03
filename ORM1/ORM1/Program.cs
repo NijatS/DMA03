@@ -1,4 +1,5 @@
 ﻿using ORM1.Context;
+using ORM1.Entities;
 using Trendyol.App.Entities;
 using Trendyol.App.Services.Implementations;
 using Trendyol.App.Services.Interfaces;
@@ -10,7 +11,7 @@ namespace ORM1
         static async Task Main(string[] args)
         {
 
-            IService service = new CustomerService();
+            IService<Shop> service = new ShopService();
 
             await service.AddAsync();
         }

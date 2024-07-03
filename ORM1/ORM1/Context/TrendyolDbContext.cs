@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trendyol.App.Entities;
+using Trendyol.App.Entities.BaseEntities;
 
 namespace ORM1.Context
 {
@@ -25,6 +26,24 @@ namespace ORM1.Context
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
 
-       
+
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var datas = ChangeTracker.Entries<BaseEntity>();
+
+            foreach (var data in datas)
+            {
+                if (data.State == EntityState.Added)
+                    data.Entity.CreatedDate = DateTime.Now;
+                else if (data.State == EntityState.Modified)
+                    data.Entity.UpdatedDate = DateTime.Now;
+
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+
     }
 }

@@ -12,8 +12,8 @@ namespace Trendyol.App.Repositories.Interfaces
         Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
-        Task<T> GetAsync(int id); 
-        Task<ICollection<T>> GetAllAsync();
+        Task<T> GetAsync(System.Linq.Expressions.Expression<Func<T, bool>> predicate); 
+        Task<ICollection<T>> GetAllAsync(System.Linq.Expressions.Expression<Func<T, bool>> predicate);
         Task<int> SaveAsync();
         int Save();
     }

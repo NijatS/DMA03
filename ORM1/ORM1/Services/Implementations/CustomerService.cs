@@ -1,18 +1,14 @@
 ﻿using ORM1.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Trendyol.App.Exceptions;
 using Trendyol.App.Repositories.Implementations;
 using Trendyol.App.Repositories.Interfaces;
 using Trendyol.App.Services.Interfaces;
 
 namespace Trendyol.App.Services.Implementations
 {
-    public class CustomerService : IService
+    public class CustomerService : IService<Customer>
     {
-        private readonly ICustomerRepository _repository;
+        private readonly ICustomerRepository _repository ;
         public CustomerService()
         {
             _repository = new CustomerRepository();
@@ -36,31 +32,66 @@ namespace Trendyol.App.Services.Implementations
                 Name = name,
                 Surname = surname,
                 Address = address,
-                CreatedDate = DateTime.Now,
                 Phone = phone,
             });
 
             await _repository.SaveAsync();
         }
 
-        public Task DeleteAsync()
+        public async Task DeleteAsync()
         {
-            throw new NotImplementedException();
+            Customer customer = await GetAsync();
+
+            customer.isDeleted = true;
+            await _repository.SaveAsync();
         }
 
-        public Task GetAllAsync()
+        public async Task GetAllAsync()
         {
-            throw new NotImplementedException();
+          ICollection<Customer> customers = await _repository.GetAllAsync(c=>!c.isDeleted);
+
+            foreach (Customer c in customers)
+            {
+                Console.WriteLine("Id:"+c.Id+ "  FullName:"+c.Name+" "+c.Surname+ "  Phone:"+c.Phone);
+            }
         }
 
-        public Task GetAsync()
+        public async Task<Customer> GetAsync()
         {
-            throw new NotImplementedException();
+            Console.Write("Enter Customer Id:");
+            int.TryParse(Console.ReadLine(), out int id);
+
+            Customer c = await _repository.GetAsync(c => c.Id == id && !c.isDeleted);
+
+            if(c is null)
+                throw new EntityNotFoundException("Customer is not found");
+
+            Console.WriteLine("Id:" + c.Id + "  FullName:" + c.Name + " " + c.Surname + "  Phone:" + c.Phone);
+            return c;
         }
 
-        public Task UpdateAsync()
+        public async Task UpdateAsync()
         {
-            throw new NotImplementedException();
+            Customer c = await GetAsync();
+
+            Console.Write("Enter New Name:");
+            string name = Console.ReadLine();
+
+            Console.Write("Surname:");
+            string surname = Console.ReadLine();
+
+            Console.Write("Address:");
+            string address = Console.ReadLine();
+
+            Console.Write("Phone:");
+            string phone = Console.ReadLine();
+
+            c.Name = name;
+            c.Address = address;
+            c.Surname = surname;
+            c.Phone = phone;
+            _repository.Update(c);
+            await _repository.SaveAsync();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trendyol.App.Entities;
 using Trendyol.App.Entities.BaseEntities;
 using Trendyol.App.Repositories.Interfaces;
 
@@ -26,11 +27,13 @@ namespace Trendyol.App.Repositories.Implementations
         public void Delete(T entity)
            => _dbSet.Remove(entity);
 
-        public async Task<ICollection<T>> GetAllAsync()
-            => await _dbSet.ToListAsync();
+        public async Task<ICollection<T>> GetAllAsync(System.Linq.Expressions.Expression<Func<T,bool>> predicate)
+        {
+           return await _context.Set<T>().Where(predicate).ToListAsync();
+        }
 
-        public async Task<T> GetAsync(int id)
-            => await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+        public async Task<T> GetAsync(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+            => await _dbSet.Where(predicate).AsQueryable().FirstOrDefaultAsync();
 
         public int Save()
             => _context.SaveChanges();
