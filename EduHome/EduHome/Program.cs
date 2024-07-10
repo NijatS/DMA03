@@ -1,3 +1,6 @@
+using EduHome.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace EduHome
 {
     public class Program
@@ -5,6 +8,11 @@ namespace EduHome
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<EduHomeDbContext>(opt =>
+            {
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+            });
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
